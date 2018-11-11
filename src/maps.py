@@ -7,23 +7,17 @@ import random
 import string
 
 
-def char_to_decimal_map():
-    '''
-    Maps alpha numeric characters in decoded messages to decimal numbers. Used
-    in encoding messages.
-    '''
-    return dict(
-        [(' ', 0)] + \
-        [(c, i + 1) for (i, c) in enumerate(string.printable)]
-    )
+# Encoding maps
+# Char -> Decimal Number
+# Base Number Digit -> Char
 
-
-def decimal_to_char_map():
+def char_to_decimal_map(key):
     '''
-    Maps decimal numbers to alpha numeric characters. Used in decoding
-    messages.
+    Maps alpha numeric characters in messages to decimal numbers.
     '''
-    return dict([(v, k) for (k, v) in char_to_decimal_map().items()])
+    chars = list(string.printable)
+    random.Random(key).shuffle(chars)
+    return dict([(' ', 0)] + [(c, i + 1) for (i, c) in enumerate(chars)])
 
 
 def digit_to_char_map(key):
@@ -38,10 +32,23 @@ def digit_to_char_map(key):
     return mp
 
 
+# Decoding maps
+# Char -> Base Number Digit
+# Decimal Number -> Char
+
+
 def char_to_digit_map(key):
     '''
     Maps alpha numeric characters in encoded messages to digits. Used in decoding
     messages.
     '''
     return dict([(x, k) for (k, v) in digit_to_char_map(key).items() for x in v])
+
+
+def decimal_to_char_map(key):
+    '''
+    Maps decimal numbers to alpha numeric characters. Used in decoding
+    messages.
+    '''
+    return dict([(v, k) for (k, v) in char_to_decimal_map(key).items()])
 

@@ -24,29 +24,35 @@ class EncodedMessage:
     def decode(self):
         '''
         Returns a Message.
+
+	Decoding algorithm:
+	    1. Separate encoded messages into characters from original message
+	    2. For each char in the encoded message
+                - Convert char to digit of a base number
+                - Convert base number back to decimal number
+                - Convert decimal number to a char in the decoded message
         '''
-        # Pull in encoding maps
-        decimal_to_char = decimal_to_char_map()
+        # Pull in the decoding maps
+        decimal_to_char = decimal_to_char_map(self.key)
         char_to_digit = char_to_digit_map(self.key)
 
-        # Pull the chars used as spaces for this key
         space_holdout_chars = [k for (k, v) in char_to_digit.items() if v == 10]
         encoded_text = []
-        cur_token = ''
-        for c in self.text:
-            if c not in space_holdout_chars:
-                cur_token += c
+        cur_encoded_char = ''
+        for l in self.text:
+            if l not in space_holdout_chars:
+                cur_encoded_char += l
             else:
-                encoded_text.append(cur_token)
-                cur_token = ''
-        if cur_token != '':
-            encoded_text.append(cur_token)
+                encoded_text.append(cur_encoded_char)
+                cur_encoded_char = ''
+        if cur_encoded_char != '':
+            encoded_text.append(cur_encoded_char)
         
         decoded_text = ''
-        for token in encoded_text:
+        for char in encoded_text:
             # Convert chars back to digits of a base number
             base_num_digits = ''
-            for c in token:
+            for c in char:
                 base_num_digits += str(char_to_digit[c])
 
             # Create base number with digits and key
@@ -57,26 +63,38 @@ class EncodedMessage:
 
             # Convert decimal number back to a char
             decoded_text += decimal_to_char[num]
-        return Message(decoded_text, self.key)
+        return Message(decoded_text)
 
 
 class Message:
 
-    def __init__(self, text, key=None):
+    def __init__(self, text):
         self.text = text
-        self.key = key
 
     def __str__(self):
-        return "Message(text={}, key={})".format(self.text, self.key)
+        return "Message(text={})".format(self.text)
 
     def encode(self):
         '''
         Returns an EncodedMessage.
+
+	Encoding algorithm:
+            1. Randomly choose key (determines base for decimal -> base number
+               conversion)
+            2. Put message text and key in string
+            3. For each char in the string
+                - Map char to a decimal number
+                - Convert decimal number to a base system given by key
+                - Convert base number digits back to chars
+	    4. Append an encoded 'space' character to each encoded char
         '''
-        key = choice(range(2, 10))  # Randomly assign key to this message
-        encoded_text = ''
-        char_to_decimal = char_to_decimal_map()
+        # Randomly assign key to this message
+        key = choice(range(2, 10))
+
+        # Pull in the encoding maps
+        char_to_decimal = char_to_decimal_map(key)
         digit_to_char = digit_to_char_map(key)
+
         def encode_char(c):
             # Convert each char to a decimal number
             num  = char_to_decimal[c]  
@@ -92,11 +110,9 @@ class Message:
 
         # Chars held out to encode spaces are stored in position 10
         space_holdout_chars = digit_to_char[10]
-        for c in self.text[:-1]:
+        encoded_text = ''
+        for c in self.text:
             encoded_text += encode_char(c) + choice(space_holdout_chars)
-        encoded_text += encode_char(self.text[-1])
 
         return EncodedMessage(encoded_text, key)
-
-
 
