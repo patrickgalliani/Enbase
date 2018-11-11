@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Enbase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+    href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style>
+      .container {
+        max-width: 1000px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Enbase</h1>
+      <form role="form" method='POST' action='/'>
+        <div class="form-group">
+          <input type="text" name="text-to-encode" class="form-control" id="encode-text-box" placeholder="Text to encode" style="max-width: 300px;" autofocus required>
+        </div>
+        <button type="Encode" class="btn btn-default">Encode</button>
+      </form>
+      <form role="form" method='POST' action='/'>
+        <div class="form-group">
+          <input type="text" name="text-to-decode" class="form-control" id="decode-text-box" placeholder="Text to decode" style="max-width: 300px;" autofocus required>
+          <input type="text" name="decode-key" class="form-control" id="decode-key-box" placeholder="Key" style="max-width: 50px;" autofocus required>
+        </div>
+        <button type="Decode" class="btn btn-default">Decode</button>
+      </form>
+        <br>
+          {% for error in errors %}
+            <h4>{{ error }}</h4>
+          {% endfor %}
+         <br>
+        </div>
+        <div class="col-sm-5 col-sm-offset-1">
+          {% if 'encoded-text' in results and 'key' in results %}
+            <br>
+            <div id="results">
+              <table class="table table-striped" style="max-width: 300px;">
+                <thead>
+                  <tr>
+                    <th>Encoded Text</th>
+                    <th>Key</th>
+                  </tr>
+                </thead>
+                <tr>
+                  <td>{{ results['encoded-text'] }}</td>
+                  <td>{{ results['key'] }}</td>
+                </tr>
+              </table>
+            </div>
+          {% endif %}
+          {% if 'decoded-text' in results %}
+            <br>
+            <div id="results">
+              <table class="table table-striped" style="max-width: 300px;">
+                <thead>
+                  <tr>
+                    <th>Decoded Text</th>
+                  </tr>
+                </thead>
+                <tr>
+                  <td>{{ results['decoded-text'] }}</td>
+                </tr>
+              </table>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
