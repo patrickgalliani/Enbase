@@ -9,15 +9,15 @@ def decimal_to_base(decimal_number, base):
         return BaseNumber('0', base)
     digits = []
     while decimal_number > 0:
-	digits.insert(0, decimal_number % base)
-	decimal_number = decimal_number // base
+        digits.insert(0, decimal_number % base)
+        decimal_number = decimal_number // base
     return BaseNumber(''.join(map(str, digits)), base)
 
 
 class BaseNumber:
 
     def __init__(self, digits, base):
-	self.digits = digits  # str
+        self.digits = digits  # str
         self.base = base      # int
 
 
@@ -26,11 +26,11 @@ class BaseNumber:
     
     
     def as_decimal(self):
-    	'''
-	Returns base_number, a number in the base system, as a decimal number.
-	'''
-	n = 0
-    	for d in self.digits:
+        '''
+        Returns base_number, a number in the base system, as a decimal number.
+        '''
+        n = 0
+        for d in self.digits:
             n = self.base * n + int(d)
-    	return n
+        return n
  
