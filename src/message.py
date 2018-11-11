@@ -25,6 +25,7 @@ class EncodedMessage:
         '''
         Returns a Message.
         '''
+        # Pull in encoding maps
         decimal_to_char = decimal_to_char_map()
         char_to_digit = char_to_digit_map(self.key)
 
