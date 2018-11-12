@@ -6,10 +6,16 @@
     <link
     href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <style>
+    .container-fluid {
+      margin-top: 50px;
+    }
+    .well-sm {
+        word-break:break-word
+    }
     </style>
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
 
         <!-- Encode form -->
@@ -54,40 +60,27 @@
         <!-- Handle encoding request -->
         {% if "encoded-text" in results and "key" in results %}
           <br>
-          <div id="results">
-            <table class="table table-striped" style="max-width: 300px;">
-              <thead>
-                <tr>
-                  <th>Encoded Text</th>
-                  <th>Key</th>
-                </tr>
-              </thead>
-              <tr>
-                <td>{{ results["encoded-text"] }}</td>
-                <td>{{ results["key"] }}</td>
-              </tr>
-            </table> <!-- ./table-striped -->
-          </div> <!-- /.results -->
+          <div class="well-sm" id="encoding-results">
+            <b>Encoding:</b>
+            <br>
+            {{ results["encoded-text"] }}
+            <br>
+            <br>
+            <b>Key:</b> {{ results["key"] }}
+          </div>
         {% endif %}
 
         <!-- Handle decoding request -->
         {% if "decoded-text" in results %}
           <br>
-          <div id="results">
-            <table class="table table-striped" style="max-width: 300px;">
-              <thead>
-                <tr>
-                  <th>Decoded Text</th>
-                </tr>
-              </thead>
-              <tr>
-                <td>{{ results["decoded-text"] }}</td>
-              </tr>
-            </table> <!-- ./table-striped -->
-          </div> <!-- /.results -->
+          <div class="well-sm" id="decoding-results">
+            <b>Original:</b>
+            <br>
+            {{ results["decoded-text"] }}
+          </div>
         {% endif %}
 
-    </div> <!-- /.container -->
+    </div> <!-- /.container-fluid -->
     <br><br>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
